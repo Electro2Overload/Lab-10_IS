@@ -56,11 +56,38 @@ def student_grade(students, assignments, submissions):
   print(f"{finalPercent}%")
 
 def assignment_statistics(assignments, submissions):
-  assignmentName = input("What is the assignment name: ").strip()
+  assignmentSName = input("What is the assignment name: ").strip()
   if name not in assignments:
     print("Assignment no found")
     return
   assignID = assignment[name]["ID"]
   scores = [sub["percent"] for sub in submission if sub["assignmentID"] == assignID]
 
-  if not 
+  if not scores:
+    print("No submissions found for this assignment.")
+    return
+
+  minScore = round(min(scores))
+  avgScore = round(sum(scores) / len(scores))
+  maxScore = round(max(scores))
+
+  print(f"Min: {minScore}%")
+  print(f"Avg: {avgScore}%")
+  print(f"Max: {maxScore}%")
+
+def assignment_graph(assignment, submissions):
+  assignmentGName = input("What is the assignment name: ").strip()
+  if name not in assignments:
+    print("Assignment not found")
+    return
+  assignID = assignment[name]["ID"]
+  scores = [sub["percent"] for sub in submissions if sub["assignmentID"] == assignID]
+
+  if not scores:
+    print("No submission found for this assignment.")
+    return
+
+  plt.figure(figSize=(8,6))
+  plt.hist(scores, bin=10, edgeColor='black')
+
+
