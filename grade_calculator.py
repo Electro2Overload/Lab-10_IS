@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 
-def load_students(fileName):
+def loadStudents(fileName):
   students = {}
   with open(fileName, "r") as f:
     for line in f:
@@ -10,7 +10,7 @@ def load_students(fileName):
       name = line[3:]
       students[name] = studentID
   return students
-def load_assignments(fileName):
+def loadAssignments(fileName):
   assignments = {}
   with open(fileName, "r") as f:
     lines = [line.strip() for line in f if line.strip()]
@@ -21,7 +21,7 @@ def load_assignments(fileName):
       assignment[name] = {"id": assignmentID, "points": pointValue}
   return assignments
 
-def load_submissions(folder):
+def loadSubmissions(folder):
   submissions = []
   for filename in os.listdir(folder):
     path = os.path.join(folder, fileName)
@@ -37,7 +37,7 @@ def load_submissions(folder):
           })
   return submissions
 
-def student_grade(students, assignments, submissions):
+def studentGrade(students, assignments, submissions):
   studentName = input("What is the student's name: ")
   if name not in students:
     print("Student not found")
@@ -55,7 +55,7 @@ def student_grade(students, assignments, submissions):
   finalPercent = round((totalEarned / 1000) * 100)
   print(f"{finalPercent}%")
 
-def assignment_statistics(assignments, submissions):
+def assignmentStatistics(assignments, submissions):
   assignmentSName = input("What is the assignment name: ").strip()
   if name not in assignments:
     print("Assignment no found")
@@ -75,7 +75,7 @@ def assignment_statistics(assignments, submissions):
   print(f"Avg: {avgScore}%")
   print(f"Max: {maxScore}%")
 
-def assignment_graph(assignment, submissions):
+def assignmentGraph(assignment, submissions):
   assignmentGName = input("What is the assignment name: ").strip()
   if name not in assignments:
     print("Assignment not found")
@@ -88,6 +88,37 @@ def assignment_graph(assignment, submissions):
     return
 
   plt.figure(figSize=(8,6))
-  plt.hist(scores, bin=10, edgeColor='black')
+  plt.hist(scores, bin=7, edgeColor='black')
 
+  plt.title(f"Scores for {assignmentGName}")
+  plt.xlabel("Score (%)")
+  plt.ylabel("Number of Students")
+
+  plt.xlim(45, 100)
+  plt.ylim(0, 8)
+
+  plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+  plt.show()
+
+def main():
+  students = loadStudents("students.txt")
+  assignments = loadAssignments("assignments.txt")
+  sumbissions = loadSubmissions("submission.txt")
+
+  print("1. Student grade")
+  print("2. Assignment statistics")
+  print("3. Assignment graph")
+  choice = input("Enter your selection ").strip()
+  
+  if choice == "1":
+    studentGrade(students, assignments, submissions)
+  elif choice == "2":
+    assignmentStatistics(assignments, submissions)
+  elif choice == "3":
+    assignmentGraph(assignments, submissions)
+
+if __name__ == "__main__":
+  main()
+  
 
